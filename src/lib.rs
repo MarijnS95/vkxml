@@ -359,6 +359,12 @@ pub struct Field {
     /// Specifies the return codes that represent error conditions. When not specified, either
     /// the command doesn't return `VkResult` or it cannot "fail".
     pub errorcodes: Option<CommaSeparatedIdentifiers>,
+
+    /// Selector variable used to switch between union members within this field
+    pub selector: Option<Identifier>,
+
+    /// Selector constant identifying this union "member"/case
+    pub selection: Option<Identifier>,
 }
 
 /// Defines a union, where the object's value is only one of its members.
