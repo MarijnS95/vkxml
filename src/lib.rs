@@ -5,7 +5,8 @@ extern crate serde_derive;
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(rename_all = "kebab-case")]
 pub struct Registry {
-    #[serde(rename = "$value")] pub elements: Vec<RegistryElement>,
+    #[serde(rename = "$value")]
+    pub elements: Vec<RegistryElement>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -27,7 +28,8 @@ pub enum RegistryElement {
 #[serde(rename_all = "kebab-case")]
 pub struct VendorIds {
     pub notation: Option<Notation>,
-    #[serde(rename = "vendorid")] pub elements: Vec<VendorId>,
+    #[serde(rename = "vendorid")]
+    pub elements: Vec<VendorId>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -44,7 +46,8 @@ pub struct VendorId {
 #[serde(rename_all = "kebab-case")]
 pub struct Tags {
     pub notation: Option<Notation>,
-    #[serde(rename = "tag")] pub elements: Vec<Tag>,
+    #[serde(rename = "tag")]
+    pub elements: Vec<Tag>,
 }
 
 /// A single author for Vulkan
@@ -64,7 +67,8 @@ pub struct Tag {
 #[serde(rename_all = "kebab-case")]
 pub struct Definitions {
     pub notation: Option<Notation>,
-    #[serde(rename = "$value")] pub elements: Vec<DefinitionsElement>,
+    #[serde(rename = "$value")]
+    pub elements: Vec<DefinitionsElement>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -194,9 +198,9 @@ pub struct Define {
 /// Handle created using `VK_DEFINE_HANDLE` or `VK_DEFINE_NON_DISPATCHABLE_HANDLE`.
 ///
 /// Handles in Vulkan are created using the C macros defined [here](https://github.com/KhronosGroup/Vulkan-Docs/blob/d893b6a79a73ce6bf268d82d2cdac059db7bd725/src/vulkan/vulkan.h#L53-L62).
-/// 
+///
 /// The macro used to define the handle depends on `Handle::ty`. For example:
-/// 
+///
 /// ```c
 /// VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkSemaphore)  // HandleType::NoDispatch
 /// VK_DEFINE_HANDLE(VkCommandBuffer)               // HandleType::Dispatch
@@ -208,7 +212,8 @@ pub struct Handle {
     pub notation: Option<Notation>,
     /// The name(s) of a handle object that is the parent of this handle.
     pub parent: Option<CommaSeparatedIdentifiers>,
-    #[serde(rename = "type")] pub ty: HandleType,
+    #[serde(rename = "type")]
+    pub ty: HandleType,
 }
 
 /// Whether the handle is dispatchable or not.
@@ -276,7 +281,8 @@ pub struct Struct {
     /// Identifiers that represent the top-level structure that this object can be within the
     /// `pNext` of.
     pub extends: Option<CommaSeparatedIdentifiers>,
-    #[serde(rename = "$value")] pub elements: Vec<StructElement>,
+    #[serde(rename = "$value")]
+    pub elements: Vec<StructElement>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -286,10 +292,10 @@ pub enum StructElement {
     Member(Field),
 }
 
-/// A typed field used in many different contexts. 
-/// 
+/// A typed field used in many different contexts.
+///
 /// `Field` can be used in the following ways:
-/// 
+///
 /// * Struct member
 /// * Union member
 /// * Function parameter
@@ -298,9 +304,9 @@ pub enum StructElement {
 #[serde(rename_all = "kebab-case")]
 pub struct Field {
     /// `name` will **always** be present when used as a struct or union member.
-    /// 
+    ///
     /// `name` will **most likely** be present when used as a function parameter.
-    /// 
+    ///
     /// `name` will **never** be present when used as a function return type.
     pub name: Option<Identifier>,
     pub notation: Option<Notation>,
@@ -345,12 +351,12 @@ pub struct Field {
     pub null_terminate: bool,
     /// `successcodes` may contain a value only if `Field` is used as a function return type.
     ///
-    /// Specifies the return codes that represent successful function execution. When not 
+    /// Specifies the return codes that represent successful function execution. When not
     /// specified, then the command doesn't return `VkResult`
     pub successcodes: Option<CommaSeparatedIdentifiers>,
     /// `errorcodes` may contain a value only if `Field` is used as a function return type.
     ///
-    /// Specifies the return codes that represent error conditions. When not specified, either 
+    /// Specifies the return codes that represent error conditions. When not specified, either
     /// the command doesn't return `VkResult` or it cannot "fail".
     pub errorcodes: Option<CommaSeparatedIdentifiers>,
 }
@@ -361,7 +367,8 @@ pub struct Field {
 pub struct Union {
     pub name: Identifier,
     pub notation: Option<Notation>,
-    #[serde(rename = "member")] pub elements: Vec<Field>,
+    #[serde(rename = "member")]
+    pub elements: Vec<Field>,
 }
 
 /// Defines a function pointer.
@@ -375,20 +382,22 @@ pub struct FunctionPointer {
     pub name: Identifier,
     pub notation: Option<Notation>,
     pub return_type: Field,
-    #[serde(default)] pub param: Vec<Field>,
+    #[serde(default)]
+    pub param: Vec<Field>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(rename_all = "kebab-case")]
 pub struct Constants {
     pub notation: Option<Notation>,
-    #[serde(rename = "constant")] pub elements: Vec<Constant>,
+    #[serde(rename = "constant")]
+    pub elements: Vec<Constant>,
 }
 
 /// C constant
 ///
 /// A `Constant` will have only have one of the following values:
-/// 
+///
 /// * `number`
 /// * `hex`
 /// * `bitpos`
@@ -408,7 +417,8 @@ pub struct Constant {
 #[serde(rename_all = "kebab-case")]
 pub struct Enums {
     pub notation: Option<Notation>,
-    #[serde(rename = "$value")] pub elements: Vec<EnumsElement>,
+    #[serde(rename = "$value")]
+    pub elements: Vec<EnumsElement>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -428,7 +438,8 @@ pub struct Enumeration {
     /// combinations of bits. There should be a `bitmask` definition
     /// attribute which uses this enumeration as the source for its enums.
     pub purpose: Option<EnumerationPurpose>,
-    #[serde(default, rename = "$value")] pub elements: Vec<EnumerationElement>,
+    #[serde(default, rename = "$value")]
+    pub elements: Vec<EnumerationElement>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -442,7 +453,8 @@ pub enum EnumerationPurpose {
 pub enum EnumerationElement {
     Notation(Notation),
     Enum(Constant),
-    #[serde(rename = "unused-range")] UnusedRange(Range),
+    #[serde(rename = "unused-range")]
+    UnusedRange(Range),
 }
 
 /// Represents a range of enumerators.
@@ -460,7 +472,8 @@ pub struct Range {
 #[serde(rename_all = "kebab-case")]
 pub struct Commands {
     pub notation: Option<Notation>,
-    #[serde(rename = "command")] pub elements: Vec<Command>,
+    #[serde(rename = "command")]
+    pub elements: Vec<Command>,
 }
 
 /// Defines a single Vulkan entrypoint.
@@ -514,7 +527,8 @@ pub struct ExternalSync {
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(rename_all = "kebab-case")]
 pub struct Features {
-    #[serde(rename = "feature")] pub elements: Vec<Feature>,
+    #[serde(rename = "feature")]
+    pub elements: Vec<Feature>,
 }
 
 /// Defines the base API for a Vulkan specification.
@@ -532,7 +546,8 @@ pub struct Feature {
     /// When generating C-style information, use this as the #define wrapper
     /// around this feature.
     pub define: Option<Identifier>,
-    #[serde(rename = "$value")] pub elements: Vec<FeatureElement>,
+    #[serde(rename = "$value")]
+    pub elements: Vec<FeatureElement>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -556,7 +571,8 @@ pub struct FeatureSpecification {
     /// Specifies the name of an extension which this `require` statement needs
     /// for its inclusions to be imported.
     pub extension: Option<Identifier>,
-    #[serde(rename = "$value")] pub elements: Vec<FeatureReference>,
+    #[serde(rename = "$value")]
+    pub elements: Vec<FeatureReference>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -578,7 +594,8 @@ pub enum FeatureReference {
 #[serde(rename_all = "kebab-case")]
 pub struct Extensions {
     pub notation: Option<Notation>,
-    #[serde(rename = "extension")] pub elements: Vec<Extension>,
+    #[serde(rename = "extension")]
+    pub elements: Vec<Extension>,
 }
 
 /// Specifies the types exposed/forbidden by an extension
@@ -596,7 +613,8 @@ pub struct Extension {
     /// A regex used to match an `api` tag on a `feature` element.
     /// If it matches, then the extension can be used with that API.
     pub match_api: Option<String>,
-    #[serde(rename = "type")] pub ty: Option<ExtensionType>,
+    #[serde(rename = "type")]
+    pub ty: Option<ExtensionType>,
     /// When generating C-style information, use this as the #define wrapper
     /// around this feature.
     pub define: Option<Identifier>,
@@ -610,7 +628,8 @@ pub struct Extension {
     /// The name and contact info for the person who is responsible for
     /// the extension. Can be inferred in the same way as `author`.
     pub contact: Option<String>,
-    #[serde(rename = "$value")] pub elements: Vec<ExtensionElement>,
+    #[serde(rename = "$value")]
+    pub elements: Vec<ExtensionElement>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -643,7 +662,8 @@ pub struct ExtensionSpecification {
     /// Specifies that the extensions or removals only apply to that specific
     /// API being generated. If not present, it applies to all APIs.
     pub api: Option<String>,
-    #[serde(rename = "$value")] pub elements: Vec<ExtensionSpecificationElement>,
+    #[serde(rename = "$value")]
+    pub elements: Vec<ExtensionSpecificationElement>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
